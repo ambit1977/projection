@@ -1,0 +1,351 @@
+<html>
+<head>
+<link rel="stylesheet" media="screen" href="css3-countdown-master/css/normalize.css" />
+<link rel="stylesheet" media="screen" href="css3-countdown-master/css/style.css" />;
+<script type="text/javascript">
+var mobile=0;
+var rpi=0;
+if ((navigator.userAgent.indexOf('iPhone') > 0) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0) {
+        document.write('<meta name="viewport" content="width=640; initial-scale=0.5; minimum-scale=0.5; maximum-scale=4.0;" />');
+        document.write('<link rel="stylesheet" media="screen" href="./style.css?8" />');
+        mobile=1;
+}else if(navigator.userAgent.indexOf('armv') > 0){
+        document.write('<link rel="stylesheet" media="screen" href="./style_rpi.css?8" />');
+        rpi=1;
+}else{
+        document.write('<link rel="stylesheet" media="screen" href="./style.css?8" />');
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script> 
+
+<script src="css3-countdown-master/js/countdown.js"></script>
+</head>
+<body style="background-color: 000; color: white; margin: 0px 0px; badding: 0px 0px; background-image: url('yuki.gif');background-repeat: no-repeat; background-position: center; background-size: cover;">
+<div id="container" style="transform: scale(1);" onClick="demo();">
+<div class="naka"><img class="tori" id="tori" src="xmasleaf.gif"></div>
+<div id="screen" class="cont" style="height: 100%; width: 100%; background-image: url('hato_tokei_base2.png'); background-repeat: no-repeat; background-position: center 0px; text-align: center; vertical-align: middle;">
+    <canvas id="clockid" style="margin-top:310px;"></canvas>
+    <div class="ovl"><img class="suisha" src="suisha.svg"></div>
+    <div class="ovl"><img class="mado" src="mado.svg"></div>
+<!--onClick="javascript:document.getElementById('container'.classList.add('zoomin');"></div-->
+    <div id="tobira">
+    <div class="ovl"><img id="tobira_l" class="tobira_l" src="tobira_l.svg"></div>
+    <div class="ovl"><img id="tobira_r" class="tobira_r" src="tobira_r.svg"></div>
+    </div>
+    <div class="ovl text1" ><h1>How many days to Christmas?</h1></div>
+    <div class="ovl cd"><div id="CDT"></div></div>
+    <div class="ovl qr"><div id="img-qr"></div></div>
+    <h3 style="display: block; position:fixed; top:250px; left: 57%;">.</h3>
+</div>
+<div>
+<script>
+var lock = 0;
+var uuid = '';
+
+// ページ読み込み時に init関数を実行
+
+window.onload = function() {
+init();
+CDT();
+uuid = generateUuid();
+if(mobile != 1){
+  qr(uuid);
+}
+};
+
+function qr( uuid ){
+  var qrtext = "http://q.go2020.tokyo/"+uuid;
+  var utf8qrtext = unescape(encodeURIComponent(qrtext));
+  $("#img-qr").html("");
+  $("#img-qr").qrcode({text:utf8qrtext}); 
+}
+
+function demo(){
+  if(lock == 1){ return; }
+  chgimg();
+  zoomin();
+  tobiraopen();
+  setTimeout(tobiraclose, 1000*15);
+  setTimeout(zoomout, 1000*18); 
+  uuid = generateUuid();
+  if(mobile != 1){
+    qr(uuid);
+  }
+}
+
+function generateUuid() {
+     //let chars = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".split("");
+     let chars = "yxxx-xxxx".split("");
+    for (let i = 0, len = chars.length; i < len; i++) {
+        switch (chars[i]) {
+            case "x":
+                chars[i] = Math.floor(Math.random() * 16).toString(16);
+                break;
+            case "y":
+                chars[i] = (Math.floor(Math.random() * 4) + 8).toString(16);
+                break;
+        }
+    }
+    return chars.join("");
+}
+ 
+function tobiraopen(){
+  var obr=document.getElementById('tobira_r');
+  var obl=document.getElementById('tobira_l');
+  obr.style.transform = 'rotateY(0deg)';
+  obr.classList.remove('tobiraclose_r');
+  obr.classList.add('tobiraopen_r');
+  obl.style.transform = 'rotateY(0deg)';
+  obl.classList.remove('tobiraclose_l');
+  obl.classList.add('tobiraopen_l');
+}
+
+function tobiraclose(){
+  var obr=document.getElementById('tobira_r');
+  var obl=document.getElementById('tobira_l');
+  obr.style.transform = 'rotateY(-180deg)';
+  obr.classList.remove('tobiraopen_r');
+  obr.classList.add('tobiraclose_r');
+  obl.style.transform = 'rotateY(180deg)';
+  obl.classList.remove('tobiraopen_l');
+  obl.classList.add('tobiraclose_l');
+}
+function chkque(){
+  if(mobile==1){return;}
+  const xhr = new XMLHttpRequest();
+  xhr.open('get', './que/que_list.txt' + '?' + Date.now());
+  xhr.send();
+  xhr.onreadystatechange = function() {
+    if( xhr.readyState === 4 && xhr.status === 200) {
+      //window.alert(this.responseText);
+      var ques = this.responseText.split( '\n' );
+      for (var i=0; i<ques.length; i++){
+        if(ques[i] == uuid){
+          demo();
+          delque(ques[i]);
+        }else if(ques[i] == 'STAR-TNOW'){
+          demo();
+          delque(ques[i]);
+        }
+      }
+    }
+  }
+}
+
+function delque(){
+  const xhr = new XMLHttpRequest();
+  xhr.open('get', 'https://test.go2020.tokyo/projection/que/delete.php?q='+uuid);
+  xhr.send();
+  xhr.onreadystatechange = function() {
+    if( xhr.readyState === 4 && xhr.status === 200) {
+      console.log(this.responseText);
+    }
+  }
+}
+
+function chgimg(){
+  const xhr = new XMLHttpRequest();
+  xhr.open('get', './giflist_u.txt');
+  xhr.send();
+  xhr.onreadystatechange = function() {
+    if( xhr.readyState === 4 && xhr.status === 200) {
+      //window.alert(this.responseText);
+      var gifs = this.responseText.split( '\n' );
+      var gif = gifs[ Math.floor(Math.random() * gifs.length) ]
+      //window.alert(gif);
+      var ob=document.getElementById('tori');
+      ob.setAttribute('src', gif);
+    }
+  }
+}
+
+function zoomin(){
+  var ob=document.getElementById('container');
+  ob.style.scale='1';
+  ob.classList.remove('zoomout');
+  ob.classList.add('zoomin');
+  lock = 1;
+}
+
+function zoomout(){
+  var ob=document.getElementById('container');
+  ob.style.scale='4';
+  ob.classList.remove('zoomin');
+  ob.classList.add('zoomout');
+  lock = 0;
+}
+
+// clock関数を１秒周期で繰り返す
+function init(){
+clock();
+setInterval('clock();',1000);
+}
+ 
+ 
+// clock関数 start
+function clock(){
+var now = new Date();
+ 
+var canvas = document.getElementById("clockid");
+var ctx = canvas.getContext('2d');
+ctx.save();
+ 
+// 各種設定
+    canvas.width = 200;
+    canvas.height = 200;
+var w      = canvas.width;
+var h      = canvas.height;
+var center = {x : w / 2, y : h / 2};
+// 文字盤の数字の中心までの半径(canvas の半分より少し小さく)
+var rads     = w / 2 * 0.60; 
+ 
+ctx.clearRect(0, 0, w, h);
+  
+// 時計の外側の丸
+ctx.save();
+ctx.strokeStyle = "rgb(207, 170, 77)";
+ctx.lineWidth   = 2;
+ctx.shadowBlur = 5;
+ctx.shadowColor = "#000";
+ctx.translate(center.x,center.y);
+/* グラデーション領域をセット */
+  // translateで座標を移動しているためグラデーションの始終を調整
+  var grad  = ctx.createLinearGradient(0,-h/2,0,h/2);   
+  /* グラデーション終点のオフセットと色をセット */
+  grad.addColorStop(0,'rgb(186, 168, 132)');
+  grad.addColorStop(0.5,'rgb(251, 240, 199)');
+  grad.addColorStop(0.9,'rgb(207, 170, 77)');
+  grad.addColorStop(1,'rgb(241, 238, 105)');
+  /* グラデーションをfillStyleプロパティにセット */
+  ctx.fillStyle = grad;
+ctx.beginPath();
+ctx.arc(0, 0, (w/2)-5, 0, Math.PI * 2, false);
+ctx.fill();
+ctx.stroke();
+/* circle white */
+ctx.beginPath();
+ctx.arc(0, 0, 80, 0, Math.PI * 2, false);
+ctx.fillStyle   ="#FFF";
+ctx.fill();
+ 
+ctx.restore();
+ 
+ 
+// 文字盤
+ctx.save();
+ctx.font        = "25px 'Baskerville'";
+ctx.textAlign   ="center";
+ctx.textBaseline    ="middle";
+ctx.fillStyle   = "rgb(0, 0, 0)";
+ctx.shadowBlur = 5;
+ctx.shadowColor = "#FFF";
+for (var i = 0; i < 12; i++) {
+    var radian = i * Math.PI / 6;
+    var x = center.x + rads * Math.sin(radian);
+    var y = center.y - rads * Math.cos(radian);
+    var text = "" + (i == 0 ? "12" : i);
+    ctx.fillText(text, x, y);
+  }
+ctx.restore();
+ 
+ 
+//  中心を移動
+ctx.translate(center.x,center.y);
+ 
+// 分
+ctx.save();
+ctx.strokeStyle ="#CCC";
+ctx.lineWidth = 2;
+ctx.beginPath();
+    for (var i=0;i<60;i++){
+        if (i%5!=0) {
+        ctx.moveTo(80,0);
+        ctx.lineTo(74,0);
+        }
+    ctx.rotate(Math.PI/30);
+    }
+ctx.stroke();
+ 
+// 時間
+ctx.strokeStyle ="#999";
+ctx.lineWidth = 3;
+ctx.beginPath();
+    for (var i=0;i<60;i++){
+    ctx.moveTo(80,0);
+    ctx.lineTo(72,0);
+    ctx.rotate(Math.PI/6);
+    }
+ctx.stroke();
+ctx.restore();
+ 
+// 針の設定
+var sec = now.getSeconds();
+var min = now.getMinutes();
+var hr= now.getHours();
+
+if(sec % 5 == 0){ chkque( uuid ); }
+
+if(min==0 && sec == 0){ chgimg(); zoomin(); tobiraopen(); }
+if(min==1 && sec == 0){ tobiraclose(); zoomout(); }
+
+if(min==30 && sec == 0){ chgimg(); zoomin(); tobiraopen(); }
+if(min==31 && sec == 0){ tobiraclose(); zoomout(); }
+
+hr = hr>=12 ? hr-12 : hr; // 12以上なら「hr-12」、それ以外なら「hr」
+ctx.fillStyle = "#999";
+ 
+// 短針
+ctx.save();
+ctx.rotate( hr*(Math.PI/6) + (Math.PI/360)*min + (Math.PI/21600)*sec )
+ctx.lineWidth = 6;
+ctx.shadowBlur = 5;
+ctx.shadowColor = "#666";
+ctx.beginPath();
+ctx.moveTo(-3,25);
+ctx.lineTo(0,-55);
+ctx.lineTo(3,10);
+ctx.stroke();
+ctx.restore();
+ 
+// 長針
+ctx.save();
+ctx.rotate( (Math.PI/30)*min + (Math.PI/1800)*sec )
+ctx.lineWidth = 3;
+ctx.strokeStyle = "rgb(0, 0, 0)";
+ctx.shadowBlur = 10;
+ctx.shadowColor = "#999";
+ctx.beginPath();
+ctx.moveTo(-2,25);
+ctx.lineTo(0,-65);
+ctx.lineTo(2,10);
+ctx.stroke();
+ctx.restore();
+ 
+// 秒針
+ctx.save();
+ctx.rotate(sec * Math.PI/30);
+ctx.strokeStyle = "rgb(207, 170, 77)";
+ctx.lineWidth = 2;
+ctx.beginPath();
+ctx.moveTo(0,20);
+ctx.lineTo(0,-75);
+ctx.stroke();
+ctx.restore();
+ 
+// 時計の中心の丸
+ctx.save();
+ctx.beginPath();
+ctx.lineWidth = 3;
+ctx.strokeStyle = "rgb(207, 170, 77)";
+ctx.fillStyle   = "rgb(186, 168, 132)";
+ctx.arc(0,0,7,0,Math.PI*2,true);
+ctx.stroke();
+ctx.fill();
+ctx.restore();
+ 
+}   // clock end
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<?php
+$que=$_GET["q"];
+if(preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $que)) {
+  file_put_contents("que_list.txt", $que, FILE_APPEND);
+  echo $que;
+}
+?>

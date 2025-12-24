@@ -1,0 +1,156 @@
+body{
+  border-color: black;
+  overflow:hidden;
+  margin: 0 0;
+  padding: 0 0;
+  padding-right: 740px;
+}
+
+.container{
+  width: 100%;
+  height: 100%;
+  margin: 0 0;
+  padding: 0 0;
+  border: none;
+  transform: scale(1);
+}
+
+.ovl{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+}
+
+.text1{
+ position: relative;
+ color: red;
+ margin-top: 50px;
+}
+
+.suisha{
+  position: relative;
+  width: 60px;
+  height: 60px;
+  top: 515px;
+  margin-left: 178px;
+  animation: rotate-anime 10s linear infinite;
+}
+@keyframes rotate-anime {
+  0%  {transform: rotate(0);}
+  100%  {transform: rotate(360deg);}
+}
+
+.mado{
+  display: none;
+  position: relative;
+  width: 160px;
+  height: 160px;
+  top: 110px;
+  margin-left: 72px;
+  z-index: -100;
+  #padding-left: 50px
+}
+
+.tobira_r {
+  position: relative;
+  height: 110px;
+  width: 55px;
+  top: 130px;
+  margin-left: 18px;
+  transform-origin: left top 0;
+}
+
+.tobira_l{
+  position: relative;
+  height: 110px;
+  width: 55px;
+  top: 130px;
+  margin-left:123px;
+  transform-origin: right top 0;
+}
+
+.tobiraopen_r{
+  animation: tobira-open_r 2s ease-out 6s 1 forwards;
+}
+
+.tobiraclose_r{
+  animation: tobira-close_r 2s ease-out 1 forwards;
+}
+
+.tobiraopen_l{
+  animation: tobira-open_l 2s ease-out 6s 1 forwards;
+}
+
+.tobiraclose_l{
+  animation: tobira-close_l 2s ease-out 1 forwards;
+}
+
+@keyframes tobira-open_l {
+  0%  {transform: rotateY(0);}
+  100%  {transform: rotateY(180deg);}
+}
+
+@keyframes tobira-close_l {
+  0%  {transform: rotateY(180deg);}
+  100%  {transform: rotateY(0deg);}
+}
+
+@keyframes tobira-open_r {
+  0%  {transform: rotateY(0);}
+  100%  {transform: rotateY(-180deg);}
+}
+
+@keyframes tobira-close_r {
+  0%  {transform: rotateY(-180deg);}
+  100%  {transform: rotateY(0deg);}
+}
+
+.zoomin {
+  transform-origin: center 180px;
+  animation: zoom-in 5s ease-in-out 1 forwards;
+}
+@keyframes zoom-in {
+  0%  {transform: scale(1)}
+  100%  {transform: scale(4)}
+}
+
+.zoomout {
+  transform-origin: center 180px;
+  animation: zoom-out 5s ease-in-out 1 forwards;
+}
+@keyframes zoom-out {
+  0%  {transform: scale(1)}
+  100%  {transform: scale(0.25)}
+}
+
+.naka{
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 136px;
+  margin: 0;
+  margin-left: 36px;
+  text-align: center;
+  z-index: -1000;
+}
+
+.tori{
+  width: 103px;
+  height: 103px;
+}
+
+.cd{
+  position: fixed;
+  top: 650px;
+}
+
+.qr{
+  position: fixed;
+  height: 100%;
+  text-align: right;
+  padding-top: 360px;
+  left: 100px;
+}
+

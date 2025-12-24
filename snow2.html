@@ -1,0 +1,75 @@
+<html>
+<head>
+<style>
+/* wrap */
+
+.hero {
+  position: relative;
+}
+
+/* video */
+
+.video-box {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  z-index: -100;
+}
+.youtube-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  min-width: 1920px;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  z-index: -100;
+}
+
+/* overlay */
+
+.overlay::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  content: "";
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* text */
+
+.text-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+h1 {
+  position: relative;
+  font-family: Roboto;
+  font-size: 60px;
+  font-weight: bold;
+  line-height: 1.2;
+  padding: 0 50px;
+  text-align: center;
+  color: #fff;
+}
+</style>
+</head>
+<body style="background-color: black; color: white; margin: 0px 0px; badding: 0px 0px;">
+<section class="hero">
+  <div id="screen" class="video-box overlay" style="height: 100%; width: 100%;">
+  <iframe  class="youtube-video" width="891" height="501" src="https://www.youtube.com/embed/PYv1RvSC5n8?autoplay=1&mute=1&vq=small" title="GORGEOUS CHRISTMAS SNOW SLIDESHOW HD   Please Click Subscribe Button." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+  <div class="text-box">
+    <h1>Christmas is coming<br>Are you ready for Christmas presents?</h1>
+  </div>
+</section>
+</body>
+</html>

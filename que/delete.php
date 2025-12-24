@@ -1,0 +1,13 @@
+<?php
+ini_set('display_errors', "On");
+$que=$_GET["q"];
+$date = date("Y/m/d H:i:s") ;
+if(preg_match('/^[0-9a-fA-Z]{4}-[0-9a-fA-Z]{4}$/', $que)) {
+  file_put_contents("./que_fnsh.txt", $que.":".$date."\n", FILE_APPEND);
+  $cmd = "grep -v $que ./que_list.txt > ./que_list_tmp.txt; cp que_list_tmp.txt que_list.txt";
+  exec($cmd);
+  //echo $cmd."\n";	
+  echo "delete!:";
+  echo $que;
+}
+?>

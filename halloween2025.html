@@ -7,13 +7,13 @@ var mobile=0;
 var rpi=0;
 if ((navigator.userAgent.indexOf('iPhone') > 0) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0) {
         document.write('<meta name="viewport" content="width=640; initial-scale=0.5; minimum-scale=0.5; maximum-scale=4.0;" />');
-        document.write('<link rel="stylesheet" media="screen" href="./style_sp_hw.css?20" />');
+        document.write('<link rel="stylesheet" media="screen" href="css/style_sp_hw.css?20" />');
         mobile=1;
 }else if(navigator.userAgent.indexOf('armv') > 0){
-        document.write('<link rel="stylesheet" media="screen" href="./style_rpi_hw.css?11" />');
+        document.write('<link rel="stylesheet" media="screen" href="css/style_rpi_hw.css?11" />');
         rpi=1;
 }else{
-        document.write('<link rel="stylesheet" media="screen" href="./style_hw.css?11" />');
+        document.write('<link rel="stylesheet" media="screen" href="css/style_hw.css?11" />');
 }
 </script>
 
@@ -22,17 +22,17 @@ if ((navigator.userAgent.indexOf('iPhone') > 0) || navigator.userAgent.indexOf('
 
 <script src="css3-countdown-master/js/countdown.js"></script>
 </head>
-<body style="background-color: 000; color: white; margin: 0px 0px; badding: 0px 0px; background-image: url('halloween-gif-animated-54-flop.gif');background-repeat: no-repeat; background-position: center; background-size: cover;">
+<body style="background-color: 000; color: white; margin: 0px 0px; badding: 0px 0px; background-image: url('images/halloween-gif-animated-54-flop.gif');background-repeat: no-repeat; background-position: center; background-size: cover;">
 <div id="container" style="transform: scale(1);" onClick="demo();">
-<div class="naka"><img class="tori" id="tori" src="xmasleaf.gif"></div>
-<div id="screen" class="cont" style="height: 100%; width: 100%; background-image: url('halloween_clock.png'); background-repeat: no-repeat; background-position: center 0px; text-align: center; vertical-align: middle; z-index: 100000;">
+<div class="naka"><img class="tori" id="tori" src="images/xmasleaf.gif"></div>
+<div id="screen" class="cont" style="height: 100%; width: 100%; background-image: url('images/halloween_clock.png'); background-repeat: no-repeat; background-position: center 0px; text-align: center; vertical-align: middle; z-index: 100000;">
     <canvas id="clockid" style="margin-top:358px; margin-left:79px;"></canvas>
-    <div class="ovl"><img class="suisha" src="jack.png"></div>
-    <div class="ovl"><img class="mado" src="mado.svg"></div>
+    <div class="ovl"><img class="suisha" src="images/jack.png"></div>
+    <div class="ovl"><img class="mado" src="images/mado.svg"></div>
 <!--onClick="javascript:document.getElementById('container'.classList.add('zoomin');"></div-->
     <div id="tobira">
-    <div class="ovl"><img id="tobira_l" class="tobira_l" src="tobira_l.svg"></div>
-    <div class="ovl"><img id="tobira_r" class="tobira_r" src="tobira_r.svg"></div>
+    <div class="ovl"><img id="tobira_l" class="tobira_l" src="images/tobira_l.svg"></div>
+    <div class="ovl"><img id="tobira_r" class="tobira_r" src="images/tobira_r.svg"></div>
     </div>
     <div class="ovl text1" ><h1>How many days to Halloween?</h1></div>
     <div class="ovl cd"><div id="CDT"></div></div>
@@ -149,7 +149,7 @@ function delque(queid){
 
 function chgimg(){
   const xhr = new XMLHttpRequest();
-  xhr.open('get', './giflist_hw.txt');
+  xhr.open('get', 'data/giflist_hw.txt');
   xhr.send();
   xhr.onreadystatechange = function() {
     if( xhr.readyState === 4 && xhr.status === 200) {
